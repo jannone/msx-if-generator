@@ -1,0 +1,66 @@
+---
+title: Demo dos Crocodilos
+author: Rafael Jannone
+email: jannone@gmail.com
+version: '1'
+releaseDate: '2019-03-06'
+nodes:
+- name: ENTRADA_PANTANO
+  screen: PANTANO.SC2
+  display: Voce esta na entrada do Pantano dos Crocodilos
+  options:
+  - label: Entrar
+    displayIf: IG=0
+    goto: PANTANO
+  - label: Fim da demo
+    displayIf: IG=1
+    run: END
+- name: PANTANO
+  screen: PANTANO.SC2
+  display: Voce esta no meio do Pantano
+  options:
+  - label: Atravessar
+    goto: MORTE_CROCODILO
+  - label: Subir arvore
+    displayIf: CA=0
+    goto: MORTE_CROCODILO
+  - label: Subir arvore
+    displayIf: CA=1
+    goto: PANTANO_ARVORE
+  - label: Assobiar
+    displayIf: CD=0
+    alert: Ao longe alguns pares de olhos curiosos emergem e viram-se em sua direcao
+    run: CA=1
+  - label: Sair
+    displayIf: CA=0
+    goto: MORTE_CROCODILO
+  - label: Sair
+    displayIf: CA=1
+    goto: ENTRADA_PANTANO
+- name: PANTANO_ARVORE
+  screen: PANTANO.SC2
+  display: Voce escala a arvore encurvada. Um crocodilo o segue e agora o cerca
+  options:
+  - label: Encarar crocodilo
+    displayIf: CD=0
+    alert: Seu olhar firme intimida o crocodilo, que perde o interesse e submerge
+    run: CD=1
+  - label: Pegar galho
+    displayIf: IG=0
+    alert: Voce quebra um pequeno galho e o guarda
+    run: IG=1
+  - label: Descer
+    displayIf: CD=0
+    goto: MORTE_CROCODILO
+  - label: Descer
+    displayIf: CD=1
+    goto: PANTANO
+- name: MORTE_CROCODILO
+  screen: MORTE.SC2
+  display: Os crocodilos sao surpreendidos pela sua presenca e o atacam! Infelizmente,
+    voce morreu
+  options:
+  - label: Reiniciar
+    run: RUN
+  - label: Sair
+    run: END

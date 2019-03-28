@@ -1,0 +1,43 @@
+---
+title: Demo da Gavea
+author: Rafael Jannone
+email: jannone@gmail.com
+version: '1'
+releaseDate: '2019-03-03'
+nodes:
+- name: GAVEA
+  screen: TELA.SC2
+  display: Voce esta em frente a Pedra da Gavea. Esta perfeito para fotografar.
+  options:
+  - label: Fotografar
+    displayIf: CM=0
+    alert: Voce esqueceu sua camera em algum lugar...
+    run: PR=1
+  - label: Fotografar
+    displayIf: CM=1
+    goto: FIM
+  - label: Procurar
+    displayIf: PR=1 AND CR=0
+    alert: No seu bolso nao tem camera, mas tem um cristal magico de teletransporte!
+    run: CR=1
+  - label: Teletransportar
+    displayIf: CR=1
+    goto: CRISTO
+- name: CRISTO
+  screen: TELA2.SC2
+  display: BZUUUUM! Como em um passe de magica, voce agora esta em frente ao Cristo
+    Redentor.
+  options:
+  - label: Voltar
+    goto: GAVEA
+  - label: Procurar
+    displayIf: CM=0
+    alert: Voce encontrou sua camera!
+    run: CM=1
+- name: FIM
+  display: Voce conseguiu fotografar a Pedra da Gavea. Fim!
+  options:
+  - label: Reiniciar
+    run: RUN
+  - label: Sair da demo
+    run: END
