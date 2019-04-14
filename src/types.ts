@@ -1,13 +1,13 @@
-export class Option
+export interface Option
 {
   label: string
-  displayIf: string
-  goto: string
-  alert: string
-  run: string
+  displayIf?: string
+  goto?: string
+  alert?: string
+  run?: string
 }
 
-export class Node
+export interface Node
 {
   name: string
   screen: string
@@ -15,7 +15,7 @@ export class Node
   options: Option[]
 }
 
-export class Game 
+export interface Game 
 {
   title: string
   author: string

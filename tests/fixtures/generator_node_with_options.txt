@@ -1,0 +1,19 @@
+$label_setupNode:
+ON AR GOSUB $label_setup_NODE
+RETURN
+$label_handleOptions:
+ON AR GOSUB $label_handleOptions_NODE
+RETURN
+$label_setup_NODE:
+T$="This is a test node"
+S$="NODE.SC2"
+OC=0
+OC=OC+1:O$(OC)="OPTION_A":OO(OC)=1
+OC=OC+1:O$(OC)="OPTION_B":OO(OC)=2
+RETURN
+$label_handleOptions_NODE:
+ON OO(AO) GOTO $label_handleOption_NODE_0,$label_handleOption_NODE_1
+$label_handleOption_NODE_0:
+RETURN
+$label_handleOption_NODE_1:
+RETURN

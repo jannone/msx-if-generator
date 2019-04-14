@@ -6,7 +6,7 @@ export class CodeOutput
   static fromTemplate(template: string): CodeOutput {
     const output = new CodeOutput()
     const lines = template.split("\n")
-    const getLabel = (line: string): string => {
+    const getLabel = (line: string): string|null => {
       const m = line.match(/^\$label_([a-zA-Z0-9_]+):/)
       return m ? m[1] : null
     }
@@ -47,8 +47,8 @@ export class CodeOutput
   }
 
   generate(): string {
-    const toLineNumber = (num) => String(num * 10 + 10)
-    const replaceLabelReferences = (line) => line.replace(/\$label_([a-zA-Z0-9_]+)/g, (m, m1) => {
+    const toLineNumber = (num: number) => String(num * 10 + 10)
+    const replaceLabelReferences = (line: string) => line.replace(/\$label_([a-zA-Z0-9_]+)/g, (m, m1) => {
       return toLineNumber(this.labels[m1])
     })
     return this.lines.map((line, idx) => {

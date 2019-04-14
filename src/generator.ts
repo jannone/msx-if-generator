@@ -42,7 +42,7 @@ export class Generator
   private generateNodeOptionHandlers(game: Game, node: Node)
   {
     const nodeIndexes = game.nodes.map((node) => node.name)
-    const getNodeIndexByName = (name) => nodeIndexes.indexOf(name) + 1
+    const getNodeIndexByName = (name: string) => nodeIndexes.indexOf(name) + 1
 
     this.output.addLabel(`handleOptions_${node.name}`)
     if (node.options && node.options.length > 0) {
@@ -75,19 +75,20 @@ export class Generator
 
   generateProgramCode(game: Game): string
   {
-    this.output.addLabel("setupNode")
-    this.output.addLine("ON AR GOSUB " + game.nodes.map((node) => `$label_setup_${node.name}`).join(","))
-    this.output.addLine("RETURN")
-  
-    this.output.addLabel("handleOptions")
-    this.output.addLine("ON AR GOSUB " + game.nodes.map((node) => `$label_handleOptions_${node.name}`).join(","))
-    this.output.addLine("RETURN")
-  
-    game.nodes.forEach((node) => {
-      this.generateNodeCode(game, node)
-    })
-  
+    if (game.nodes.length > 0) {
+      this.output.addLabel("setupNode")
+      this.output.addLine("ON AR GOSUB " + game.nodes.map((node) => `$label_setup_${node.name}`).join(","))
+      this.output.addLine("RETURN")
+
+      this.output.addLabel("handleOptions")
+      this.output.addLine("ON AR GOSUB " + game.nodes.map((node) => `$label_handleOptions_${node.name}`).join(","))
+      this.output.addLine("RETURN")
+
+      game.nodes.forEach((node) => {
+        this.generateNodeCode(game, node)
+      })  
+    }
+
     return this.output.generate()
   }
-
 }

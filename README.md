@@ -1,3 +1,6 @@
+[![Build Status](https://travis-ci.org/jannone/msx-if-generator.svg?branch=master)](https://travis-ci.org/jannone/msx-if-generator)
+
+
 # Interactive Fiction Generator for MSX
 
 Create Interative Fiction games using a simple JSON or YAML as input
@@ -14,7 +17,6 @@ Use it at your own risk.
 ## Requirements
 
 * NodeJS: https://nodejs.org
-* ts-node: https://github.com/TypeStrong/ts-node
 
 ## Installation
 
