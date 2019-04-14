@@ -43,6 +43,10 @@
     "typescript": "^3.3.3333"
   },
   "files": [
-    "lib/**/*"
-  ]
+    "lib/**/*",
+    "templates/**/*"
+  ],
+  "bin": {
+    "msx-if-generator": "./lib/cli.js"
+  }
 }

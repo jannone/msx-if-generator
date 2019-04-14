@@ -1,15 +1,21 @@
+#!/usr/bin/env node
+
 import fs = require('fs')
+import path = require('path')
 
 import { Generator } from './generator'
 import { CodeOutput } from './output'
 import { gameFromFilename } from './reader'
 
-const templateFilename = "./src/templates/template.bas"
+const TEMPLATE_FILE = "../templates/template.bas"
 
 const main = () => {
-  const gameFilename = process.argv[2]  
+  const templateFilename = path.resolve(__dirname, TEMPLATE_FILE)
+  const gameFilename = process.argv[2]
   if (!gameFilename) {
-    throw new Error("No input file specified")
+    // tslint:disable-next-line:no-console
+    console.error("No input file specified")
+    return
   }
   const game = gameFromFilename(gameFilename)
   const template = fs.readFileSync(templateFilename, "utf-8")
