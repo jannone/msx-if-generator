@@ -11,3 +11,19 @@ export const wordwrap = (text: string, maxLineLength: number, brk: string) => {
     }
   }, '')
 }
+
+export const convertStringToMSX = (text: string) => {
+  const tableBaseValue = 128
+  const table = 
+    "Çüéâäà.çêëèïîìÄÁ" +
+    "ÉæÆôöòûùÿÖÜ....." +
+    "áíóúñÑ.........." +
+    "Ãã..Õõ"
+
+  const regularExpression = /[ÇüéâäàçêëèïîìÄÁÉæÆôöòûùÿÖÜáíóúñÑÃãÕõ]/g
+
+  return text.replace(regularExpression, (char) => {
+    const index = table.indexOf(char)
+    return index >= 0 ? String.fromCharCode(tableBaseValue + index) : char
+  })
+}

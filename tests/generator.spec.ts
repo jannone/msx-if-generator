@@ -19,7 +19,7 @@ describe("Generator", () => {
     const outputBuilder = () => new CodeOutput()
     const generator = new Generator(outputBuilder)
     const result = generator.generateProgramCode(game)
-    expect(result).toBe("")
+    expect(result.length).toBe(0)
   })
 
   it("must generate a node with options", () => {

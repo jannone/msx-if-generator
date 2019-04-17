@@ -1,6 +1,6 @@
-import { wordwrap } from './util'
-import { Node, Game } from './types'
 import { CodeOutput } from './output'
+import { Game, Node } from './types'
+import { wordwrap } from './util'
 
 const MAX_DISPLAY_LEN = 20
 
@@ -12,10 +12,29 @@ export class Generator
     this.output = outputBuilder()
   }
 
+  public generateProgramCode(game: Game): Buffer
+  {
+    if (game.nodes.length > 0) {
+      this.output.addLabel("setupNode")
+      this.output.addLine("ON AR GOSUB " + game.nodes.map((node) => `$label_setup_${node.name}`).join(","))
+      this.output.addLine("RETURN")
+
+      this.output.addLabel("handleOptions")
+      this.output.addLine("ON AR GOSUB " + game.nodes.map((node) => `$label_handleOptions_${node.name}`).join(","))
+      this.output.addLine("RETURN")
+
+      game.nodes.forEach((node) => {
+        this.generateNodeCode(game, node)
+      })
+    }
+
+    return this.output.generate()
+  }
+
   private validateNode(node: Node) 
   {
     if (node.name.match(/[^a-zA-Z_]/)) {
-      throw "Node name must contain only letters and underscore"
+      throw new Error("Node name must contain only letters and underscore")
     }
   }
 
@@ -41,7 +60,7 @@ export class Generator
 
   private generateNodeOptionHandlers(game: Game, node: Node)
   {
-    const nodeIndexes = game.nodes.map((node) => node.name)
+    const nodeIndexes = game.nodes.map((gameNode) => gameNode.name)
     const getNodeIndexByName = (name: string) => nodeIndexes.indexOf(name) + 1
 
     this.output.addLabel(`handleOptions_${node.name}`)
@@ -71,24 +90,5 @@ export class Generator
     this.validateNode(node)
     this.generateNodeSetup(node)
     this.generateNodeOptionHandlers(game, node)
-  }
-
-  generateProgramCode(game: Game): string
-  {
-    if (game.nodes.length > 0) {
-      this.output.addLabel("setupNode")
-      this.output.addLine("ON AR GOSUB " + game.nodes.map((node) => `$label_setup_${node.name}`).join(","))
-      this.output.addLine("RETURN")
-
-      this.output.addLabel("handleOptions")
-      this.output.addLine("ON AR GOSUB " + game.nodes.map((node) => `$label_handleOptions_${node.name}`).join(","))
-      this.output.addLine("RETURN")
-
-      game.nodes.forEach((node) => {
-        this.generateNodeCode(game, node)
-      })  
-    }
-
-    return this.output.generate()
   }
 }

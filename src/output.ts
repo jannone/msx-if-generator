@@ -1,9 +1,8 @@
+import { convertStringToMSX } from "./util";
+
 export class CodeOutput
 {
-  lines: string[]
-  labels: { [label: string]: number }
-
-  static fromTemplate(template: string): CodeOutput {
+  public static fromTemplate(template: string): CodeOutput {
     const output = new CodeOutput()
     const lines = template.split("\n")
     const getLabel = (line: string): string|null => {
@@ -25,38 +24,42 @@ export class CodeOutput
     return output
   } 
 
+  private lines: string[]
+  private labels: { [label: string]: number }
+
   constructor() {
     this.lines = []
     this.labels = {}
   }
 
-  addLine(line: string) {
+  public addLine(line: string) {
     this.lines.push(line)
   }
 
-  addLines(lines: string[]) {
+  public addLines(lines: string[]) {
     lines.forEach((line) => this.addLine(line))
   }
 
-  addLabel(label: string) {
+  public addLabel(label: string) {
     this.labels[label] = this.lines.length
   }
 
-  getLineByLabel(label: string): number {
+  public getLineByLabel(label: string): number {
     return this.labels[label]
   }
 
-  generate(): string {
+  public generate(): Buffer {
     const toLineNumber = (num: number) => String(num * 10 + 10)
     const replaceLabelReferences = (line: string) => line.replace(/\$label_([a-zA-Z0-9_]+)/g, (m, m1) => {
       return toLineNumber(this.labels[m1])
     })
-    return this.lines.map((line, idx) => {
+    const body = this.lines.map((line, idx) => {
       return toLineNumber(idx) + " " + replaceLabelReferences(line)
     }).join("\r\n")
+    return Buffer.from(convertStringToMSX(body), 'ascii')
   }
 
-  debug(): string {
+  public debug(): string {
     return this.lines.map((line, lineIdx) => {
       return Object.entries(this.labels)
         .filter(([key, value]) => lineIdx === value)

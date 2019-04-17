@@ -20,5 +20,5 @@ export const gameFromFilename = (filename: string) => {
   if (filename.match(/\.(yml|yaml)$/i)) {
     return gameFromYaml(filename)
   }
-  throw "Unknown file extension. Please use .json, .yml or .yaml"
+  throw new Error("Unknown file extension. Please use .json, .yml or .yaml")
 }

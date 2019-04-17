@@ -23,7 +23,7 @@ const main = () => {
   const generator = new Generator(outputBuilder)
   const result = generator.generateProgramCode(game)
   // tslint:disable-next-line:no-console
-  console.log(result)
+  process.stdout.write(result)
 }
 
 if (require.main === module) { 
